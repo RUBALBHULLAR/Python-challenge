@@ -1,90 +1,81 @@
-#import file
 
+#import file
 import os
 import csv
 
 #path to the csvfile
-
 csvpath = os.path.join('budget_data.csv')
 
-#initializing the variables 
+# Set variables
 total_months = 0
-total_revenue =0
-changes =[]
-date_count = []
-greatest_inc = 0
-greatest_inc_month = 0
-greatest_dec = 0
-greatest_dec_month = 0
+total_profit_loss = 0
+prev_profit_loss = 0
+month_change = 0
+total_month_change = 0
+average_month_change = 0
+greatest_increase = 0
+greatest_increase_month = ""
+greatest_decrease = 0
+greatest_increase_month = ""
 
 # Open the CSV
-with open(csvpath, newline = '') as csvfile:
-    csvreader = csv.reader(csvfile, delimiter = ',')
-    next(csvreader, None)
-    row = next(csvreader)
-# calculating the total number of months and total revenue
-    previous_profit = int(row[1])
-    total_months = total_months + 1
-    total_revenue = total_revenue + int(row[1])
-    greatest_inc = int(row[1])
-    greatest_inc_month = row[0]
-
+with open(csvpath, newline="") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    
+    # Read the header row first
+    csv_header = next(csvreader)
+    
+    # Read each row of data after the header
     for row in csvreader:
- 
-        total_months = total_months + 1
-        total_revenue = total_revenue + int(row[1])
-
-        # Calculate change from this month to previous months
-        change = int(row[1]) - previous_profit
-        changes.append(change)
-        previous_profit = int(row[1])
-        date_count.append(row[0])
+        # count the total number of months
+        total_months += 1
         
-        #calculating the greatest increase
-        if int(row[1]) > greatest_inc:
-            greatest_inc = int(row[1])
-            greatest_inc_month = row[0]
+        # add up the total net profit/loss
+        total_profit_loss += int(row[1])
+        
+        # calculate the change in profit/loss between months
+        if total_months > 1:
+            month_change = int(row[1]) - prev_profit_loss
             
-        #calculating the greatest decrease
-        if int(row[1]) < greatest_dec:
-            greatest_dec = int(row[1])
-            greatest_dec_month = row[0]  
-      
-    # calculating the average and date
-    average_change = sum(changes)/len(changes)
-
-    high = max(changes)
-    low = min(changes)
-
-    # printing all values
-    print("Financial Analysis")
-    print("-------------------------------")
-    print("Total Months: " + str(total_months))
-    print("Total Amount: $" + str(total_revenue))
-    print("Average: $" + str(average_change))
-    print("Greatest Increase in Profits: " + greatest_inc_month + " ($" + str(greatest_inc) + ")")
-    print("Greatest Decrease in Profits: " + greatest_dec_month+ " ($" + str(greatest_dec) + ")")
-
-
-    PyBank = open("output.txt","w+")
-    PyBank.write("Financial Analysis") 
-    PyBank.write('\n' +"Total Months: " + str(total_months)) 
-    PyBank.write('\n' +"Total Amount: $" + str(total_revenue)) 
-    PyBank.write('\n' +"Average: $" + str(average_change)) 
-    PyBank.write('\n' +"Greatest Increase in Profits: " + greatest_inc_month + " ($" +str(greatest_inc) + ")\n")
-
-    PyBank.write('\n' +"Greatest Decrease in Profits: " + (greatest_dec_month))
-    PyBank.write('\n' +str (low))
-   
+        # add up the total monthly change, used later to calculate average
+        total_month_change += month_change
         
+        # set profit/loss value for previous month
+        prev_profit_loss = int(row[1])
         
-
+        # calculate greatest increase in profits
+        if month_change > greatest_increase:
+            greatest_increase = month_change
+            greatest_increase_month = row[0]
         
-        
-        
+        # calculate greatest decrease in losses
+        if month_change < greatest_decrease:
+            greatest_decrease = month_change
+            greatest_decrease_month = row[0]
 
+# calculate average change between months        
+average_month_change = total_month_change / (total_months - 1)
 
+# Print the analysis to terminal
+print("Financial Analysis")
+print("----------------------------")        
+print("Total Months: " + str(total_months))
+print("Total: $" + str(total_profit_loss))
+print("Average Change: $" + str(format(average_month_change, '.2f')))
+print("Greatest Increase in Profits: " + greatest_increase_month 
+      + " ($" + str(greatest_increase) + ")")
+print("Greatest Decrease in Profits: " + greatest_decrease_month 
+      + " ($" + str(greatest_decrease) + ")")
 
-
-
-
+# Write to text file
+f = open("analysis.txt", "w")
+f.write("Financial Analysis\n")
+f.write("----------------------------\n")        
+f.write("Total Months: " + str(total_months) + "\n")
+f.write("Total: $" + str(total_profit_loss) + "\n")
+f.write("Average Change: $" + str(format(average_month_change, '.2f')) + "\n")
+f.write("Greatest Increase in Profits: " + greatest_increase_month 
+      + " ($" + str(greatest_increase) + ")\n")
+f.write("Greatest Decrease in Profits: " + greatest_decrease_month 
+      + " ($" + str(greatest_decrease) + ")\n")
+f.close()
