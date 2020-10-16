@@ -58,22 +58,24 @@ with open(csvpath, newline = '') as csvfile:
 
     # printing all values
     print("Financial Analysis")
-    print("Total Months:" + str(total_months))
-    print("Total Amount:" + str(total_revenue))
-    print(average_change)
-    print(greatest_inc_month, max(changes))
-    print(greatest_dec_month, min(changes))
+    print("-------------------------------")
+    print("Total Months: " + str(total_months))
+    print("Total Amount: $" + str(total_revenue))
+    print("Average: $" + str(average_change))
+    print("Greatest Increase in Profits: " + greatest_inc_month + " ($" + str(greatest_inc) + ")")
+    print("Greatest Decrease in Profits: " + greatest_dec_month+ " ($" + str(greatest_dec) + ")")
 
 
     PyBank = open("output.txt","w+")
     PyBank.write("Financial Analysis") 
-    PyBank.write('\n' +"Total Months" + str(total_months)) 
-    PyBank.write('\n' +"Total Amount" + str(total_revenue)) 
-    PyBank.write('\n' +"Average" + str(average_change)) 
-    PyBank.write('\n' +greatest_inc_month) 
-    PyBank.write('\n' +str(high))
-    PyBank.write('\n' +greatest_dec_month) 
-    PyBank.write('\n' +str(low))     
+    PyBank.write('\n' +"Total Months: " + str(total_months)) 
+    PyBank.write('\n' +"Total Amount: $" + str(total_revenue)) 
+    PyBank.write('\n' +"Average: $" + str(average_change)) 
+    PyBank.write('\n' +"Greatest Increase in Profits: " + greatest_inc_month + " ($" +str(greatest_inc) + ")\n")
+
+    PyBank.write('\n' +"Greatest Decrease in Profits: " + (greatest_dec_month))
+    PyBank.write('\n' +str (low))
+   
         
         
 

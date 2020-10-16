@@ -41,7 +41,7 @@ for name in clean_data:
 winner = winner_list[0]
 
 # Print all data
-print ("Election results :")
+print ("Election results: ")
 print(total_votes) 
 print(candidates)  
 print(percentage_votes)
@@ -50,7 +50,7 @@ print(winner)
 
 # Writng output files
 PyPoll = open("output.txt","w+")
-PyPoll.write("Election Results")  
+PyPoll.write("Election Results: ")  
 PyPoll.write('\n' + "Total_votes" + str(total_votes)) 
 PyPoll.write('\n' + str(candidates))
 PyPoll.write('\n' + str(percentage_votes))
